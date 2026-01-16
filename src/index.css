@@ -1,18 +1,787 @@
-.card img {
-    height: 200px;
-    object-fit: cover;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+/* Mushaf Styling */
+.mushaf-container {
+    background-color: #f8f4e8;
+    min-height: 100vh;
 }
-.nomor {
-    padding: 5px;
+
+.mushaf-paper-effect {
+    background-image: 
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f8f4e8"/><path d="M0 20h100M0 40h100M0 60h100M0 80h100" stroke="%23e8e0c8" stroke-width="0.5"/></svg>'),
+        linear-gradient(to bottom, rgba(248,244,232,0.8), rgba(248,244,232,0.9));
+    background-size: 100px 100px, cover;
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.05);
+    border-top: 1px solid #e8e0c8;
+    border-bottom: 1px solid #e8e0c8;
+}
+
+.surah-title {
+    font-family: 'Scheherazade New', 'Lateef', serif;
+    font-size: 2.8rem;
+    color: #2a3a12;
+    line-height: 1.2;
+}
+
+.surah-latin {
+    font-family: 'Amiri', serif;
+    font-size: 1.8rem;
+    color: #4a3710;
+    margin-top: 0.5rem;
+}
+
+.surah-translation {
+    font-style: italic;
+    font-size: 1.1rem;
+}
+
+.surah-description {
+    background-color: rgba(255,255,255,0.7);
+    border-radius: 8px;
+    border-left: 4px solid #d4a017;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.ayat-item {
+    background-color: rgba(255,255,255,0.7);
+    border-radius: 5px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    position: relative;
+    border-right: 1px solid #e8e0c8;
+    border-left: 1px solid #e8e0c8;
+}
+
+.ayat-item.last-read {
+    background-color: rgba(210,230,210,0.5);
+    border-left: 4px solid #2a6e2a;
+}
+
+.ayat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.number-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #2a3a12;
+    color: white;
     border-radius: 50%;
+    font-family: 'Amiri', serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.ayat-text {
+    font-family: 'Scheherazade New', 'Lateef', serif;
+    font-size: 2rem;
+    line-height: 2.5;
+    text-align: right;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+    direction: rtl;
+}
+
+.ayat-translation {
+    background-color: rgba(248,244,232,0.7);
+    padding: 1rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+    border-top: 1px dashed #d4a017;
+}
+
+.translation-text {
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.ayat-separator {
+    text-align: center;
+    margin: 1.5rem 0;
+    color: #d4a017;
+}
+
+.separator-icon {
+    font-family: 'Scheherazade New', serif;
+    font-size: 1.8rem;
+}
+
+.mark-read-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #6a5a30;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mark-read-btn:hover {
+    color: #2a6e2a;
+    transform: scale(1.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .surah-title {
+        font-size: 2.2rem;
+    }
+    
+    .ayat-text {
+        font-size: 1.8rem;
+        line-height: 2.2;
+    }
+    
+    .mushaf-controls {
+        flex-direction: column;
+    }
+}
+
+body {
+    background-color: #f5f5f0; /* Base parchment color */
+    background-image: 
+      linear-gradient(rgba(227, 217, 190, 0.5) 2px, transparent 2px),
+      linear-gradient(90deg, rgba(227, 217, 190, 0.5) 2px, transparent 2px),
+      linear-gradient(rgba(227, 217, 190, 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(227, 217, 190, 0.3) 1px, transparent 1px),
+      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.15"/></svg>');
+    background-size: 
+      100px 100px,
+      100px 100px,
+      20px 20px,
+      20px 20px,
+      400px 400px;
+    box-shadow: 
+      inset 0 0 30px rgba(0, 0, 0, 0.1),
+      inset 0 0 100px rgba(187, 156, 87, 0.2);
+    position: relative;
+  }
+  
+  /* Optional: Add coffee stains effect */
+  body::before {
+    content: "";
+    position: absolute;
+    top: 20%;
+    right: 10%;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(101, 67, 33, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(5px);
+  }
+  
+  body::after {
+    content: "";
+    position: absolute;
+    bottom: 15%;
+    left: 15%;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(101, 67, 33, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(4px);
+  }
+
+  .card{
+    background-color: cornsilk;
+  }
+.surat {
+    text-align: end;
+}
+
+.judul {
+    color: black;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.atas {
+    color: #8b4513;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.tipe {
+    font-family: 'Scheherazade New', Arial, sans-serif;
+    line-height: 2;
+    font-weight: bold;
+    direction: rtl;
+    text-align: right;
+    color: #333;
+    background: linear-gradient(135deg, #2c2c2c, #6e6e6e, #000);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    text-rendering: optimizeLegibility;
+}
+
+.translation {
+    line-height: 1.6;
+    text-align: left;
+}
+
+.apalah {
+    margin-left: 10px;
+    justify-content: end;
+}
+
+.apa {
+    margin-right: 10px;
+    font-size: 2.5rem;
+}
+
+.apa-itu {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #8b4513;
+}
+
+.detail {
+    text-align: center;
+}
+
+.count {
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Komponen Form */
+.form-control {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.about-section {
+    background-color: #f8f9fa;
+    padding: 60px 0;
+}
+
+.about-title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.about-text {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.about-list {
+    padding-left: 20px;
+    font-size: 18px;
+    color: #555;
+}
+
+.about-list li {
+    margin-bottom: 10px;
+}
+
+.about-content {
+    background: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Komponen Tasbih */
+.tasbih-container {
+    margin-top: 70px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #28a745, #218838);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6), 
+                0 4px 8px rgba(0, 0, 0, 0.1),
+                0 6px 20px rgba(0, 0, 0, 0.1);
+    max-width: 200px;
+    font-family: Arial, sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.tasbih-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 190%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 60%);
+    opacity: 0.4;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.tasbih-display {
+    background: linear-gradient(145deg, #333, #555);
+    color: #0eff0e;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 2.5rem;
+    font-family: 'Courier New', Courier, monospace;
+    text-shadow: 0 0 5px rgba(14, 255, 14, 0.5), 
+                 0 0 10px rgba(14, 255, 14, 0.5), 
+                 0 0 15px rgba(14, 255, 14, 0.5);
+    position: relative;
+    z-index: 2;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 
+                0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tasbih-buttons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+.tasbihplus {
+    background: linear-gradient(145deg, #b0b0b0, #f0f0f0);
+    color: #f0f0f0;
+    font-weight: bold;
+    padding: 27px 10px;
+    border-radius: 50%;
+    border: 1px solid #dcdcdc;
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.8), 
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2), 
+                0 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.tasbihplus:hover {
+    transform: scale(1.05);
+}
+
+.reset-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 100px;
+}
+
+.reset {
+    text-align: center;
+    padding: 10px 4px;
+    border-radius: 50%;
+    font-size: 7px;
+    background: linear-gradient(145deg, #e41212, #f5f5f5);
+    color: #333;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.8), 
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2), 
+                0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.reset:hover {
+    transform: scale(1.05);
+    background: linear-gradient(145deg, #c0c0c0, #e0e0e0);
+}
+
+/* Komponen Tombol */
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-warning {
+    background-color: #f0ad4e;
+    color: #fff;
+}
+
+.btn-success {
+    background-color: #5cb85c;
+    color: #fff;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn-primary {
     background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.gulir {
+    background-color: #28a745;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.gulir:hover {
+    background-color: #218838;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.gulir:active {
+    background-color: #1e7e34;
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Komponen Lainnya */
+.angka {
+    background-color: #777066;
+}
+
+.nomer {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    background-color: #8b4513;
     color: white;
     text-align: center;
-    margin-right: 20px;
+    margin-right: 15px;
+    font-weight: bold;
 }
-.arti{
-    margin-left: 30px;
+
+.arti {
+    margin-left: 15px;
+    font-style: italic;
+    color: #6c757d;
+}
+
+.list-group-item {
+    background-color: rgba(44, 62, 80, 0.8);
+    color: #ecf0f1;
+    border: none;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.list-group-item:hover {
+    background-color: rgba(52, 73, 94, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+.arabic-text {
+    font-family: 'Scheherazade New', Arial, sans-serif;
+    line-height: 2;
+    font-size: 40px;
+    font-weight: bold;
+    direction: rtl;
+    text-align: right;
+    color: #080808;
+    background: linear-gradient(135deg, #2c2c2c, #6e6e6e, #000);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    text-rendering: optimizeLegibility;
+}
+
+.arabic-text .harakah {
+    font-size: 80%;
+    vertical-align: top;
+    text-shadow: none;
+}
+
+.arabic-text::selection {
+    background: #444;
+    color: #fff;
+}
+
+.floating-nav {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.floating-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #065f46;  /* Warna hijau Islami */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.floating-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    background-color: #047857;  /* Warna hijau lebih gelap saat hover */
+}
+
+.floating-button img {
+    width: 30px;
+    height: 30px;
+    filter: brightness(0) invert(1);  /* Membuat icon putih */
+}
+/* Responsive Breakpoints */
+
+@media (max-width: 1200px) {
+    /* Tablet Landscape dan Laptop Kecil */
+    .arabic-text {
+        font-size: 36px;
+    }
+    
+    .card {
+        padding: 12px;
+    }
+    
+    .card-header {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 992px) {
+    /* Tablet Portrait */
+    body {
+        padding: 15px;
+    }
+    
+    .tasbih-container {
+        margin-top: 50px;
+        max-width: 180px;
+    }
+    
+    .tasbih-display {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Smartphone Landscape dan Tablet Kecil */
+    .arabic-text {
+        font-size: 32px;
+    }
+    
+    .apalah {
+        margin-left: 60px;
+    }
+    
+    body {
+        /* background-image: url('/images/back.png'); */
+        padding: 12px;
+    }
+    
+    .card {
+        padding: 10px;
+        border-radius: 12px;
+    }
+    
+    .card-header {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+    
+    .card-body {
+        font-size: 0.95rem;
+    }
+    
+    .floating-nav {
+        bottom: 15px;
+        left: 15px;
+    }
+    
+    .floating-button {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .floating-button img {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .about-title {
+        font-size: 28px;
+    }
+    
+    .about-text {
+        font-size: 16px;
+    }
+    
+    .about-content {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Smartphone Portrait */
+    .arabic-text {
+        font-size: 28px;
+        line-height: 1.8;
+    }
+    
+    .arabic-text .harakah {
+        font-size: 70%;
+    }
+    
+    body {
+        padding: 10px;
+    }
+    
+    .card {
+        padding: 5px;
+        border-radius: 10px;
+    }
+    
+    .card-header {
+        font-size: 1.1rem;
+    }
+    
+    .card-body {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    .tasbih-container {
+        margin-top: 40px;
+        max-width: 160px;
+        padding: 15px;
+    }
+    
+    .tasbih-display {
+        font-size: 2rem;
+        padding: 4px 8px;
+    }
+    
+    .tasbihplus {
+        padding: 24px 8px;
+    }
+    
+    .floating-nav {
+        bottom: 10px;
+        left: 10px;
+    }
+    
+    .floating-button {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .floating-button img {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .navbol, .navbolbout {
+        width: 35px;
+        height: 35px;
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+    
+    .about-title {
+        font-size: 24px;
+    }
+    
+    .about-text {
+        font-size: 15px;
+    }
+    
+    .about-content {
+        padding: 20px;
+    }
+    
+    .about-list {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 400px) {
+    /* Smartphone Sangat Kecil */
+    .arabic-text {
+        font-size: 24px;
+    }
+    
+    .card {
+        padding: 6px;
+    }
+    
+    .card-header {
+        font-size: 1rem;
+    }
+    
+    .tasbih-container {
+        max-width: 140px;
+        padding: 12px;
+    }
+    
+    .tasbih-display {
+        font-size: 1.8rem;
+    }
+    
+    .tasbihplus {
+        padding: 20px 6px;
+    }
+    
+    .reset-button {
+        margin-right: 80px;
+    }
+    
+    .gulir {
+        padding: 4px 12px;
+        font-size: 10px;
+    }
+    
+    .nomer {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        margin-right: 10px;
+    }
+    
+    .arti {
+        margin-left: 10px;
+        font-size: 0.8rem;
+    }
 }
